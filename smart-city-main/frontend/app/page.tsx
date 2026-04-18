@@ -616,7 +616,7 @@ export default function Home() {
       if (geoData && geoData.length > 0) {
         const { lat, lon, display_name } = geoData[0];
         const city = display_name.split(",")[0];
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
         const probeRes = await fetch(`${apiUrl}/api/probe/analyze?lat=${lat}&lng=${lon}`);
         const data = await probeRes.json();
         const newMetrics = [
