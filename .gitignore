@@ -1,0 +1,62 @@
+# ===== NODE MODULES =====
+node_modules/
+**/node_modules/
+
+# ===== NEXT.JS =====
+.next/
+out/
+build/
+dist/
+
+# ===== PYTHON =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+.eggs/
+*.egg
+
+# ===== ENVIRONMENT VARIABLES =====
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
+
+# ===== DATABASE =====
+*.db
+*.sqlite
+*.sqlite3
+
+# ===== LOGS =====
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== OS FILES =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== EDITOR =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== PACKAGE LOCKS (optional) =====
+# package-lock.json
+# yarn.lock
+
+# ===== MISC =====
+*.pem
+.vercel
+.turbo
+coverage/

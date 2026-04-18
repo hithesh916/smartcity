@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  full_name       String?
+  email           String   @unique
+  hashed_password String
+  role            String   @default("user")
+}
+
+model Place {
+  id        Int     @id @default(autoincrement())
+  name      String
+  type      String
+  latitude  Float
+  longitude Float
+  details   String?
+}
+
+model AirQuality {
+  id         Int      @id @default(autoincrement())
+  area_name  String
+  aqi        Int
+  pm25       Float
+  pm10       Float
+  latitude   Float
+  longitude  Float
+  timestamp  DateTime @default(now())
+}
