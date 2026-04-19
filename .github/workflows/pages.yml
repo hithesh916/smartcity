@@ -16,29 +16,40 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: smart-city-main/frontend/package-lock.json
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Detect and Install
+        run: |
+          if [ -d "smart-city-main/frontend" ]; then
+            echo "DIR=smart-city-main/frontend" >> $GITHUB_ENV
+          elif [ -d "frontend" ]; then
+            echo "DIR=frontend" >> $GITHUB_ENV
+          else
+            echo "DIR=." >> $GITHUB_ENV
+          fi
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-        working-directory: smart-city-main/frontend
+      - name: Install
+        run: |
+          cd ${{ env.DIR }}
+          npm install --legacy-peer-deps
 
-      - name: Build with Next.js
-        run: npm run build
-        working-directory: smart-city-main/frontend
+      - name: Build
+        run: |
+          cd ${{ env.DIR }}
+          npm run build
+        env:
+          NEXT_PUBLIC_SKIP_LINT: true
+          NEXT_PUBLIC_API_URL: https://smart-city-backend.onrender.com
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: smart-city-main/frontend/out
+          path: ${{ env.DIR }}/out
 
   deploy:
     environment:
