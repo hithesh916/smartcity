@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Frontend to GitHub Pages
 
 on:
   push:
@@ -10,6 +10,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,39 +21,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
-      - name: Detect and Install
-        run: |
-          if [ -d "smart-city-main/frontend" ]; then
-            echo "DIR=smart-city-main/frontend" >> $GITHUB_ENV
-          elif [ -d "frontend" ]; then
-            echo "DIR=frontend" >> $GITHUB_ENV
-          else
-            echo "DIR=." >> $GITHUB_ENV
-          fi
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: smart-city-main/frontend
 
-      - name: Install
-        run: |
-          cd ${{ env.DIR }}
-          npm install --legacy-peer-deps
-
-      - name: Build
-        run: |
-          cd ${{ env.DIR }}
-          npm run build
+      - name: Build Next.js static export
+        run: npm run build
+        working-directory: smart-city-main/frontend
         env:
-          NEXT_PUBLIC_SKIP_LINT: true
-          NEXT_PUBLIC_API_URL: https://smart-city-backend.onrender.com
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.DIR }}/out
+          path: smart-city-main/frontend/out
 
   deploy:
     environment:
