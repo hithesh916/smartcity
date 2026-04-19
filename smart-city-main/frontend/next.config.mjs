@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'export',
-    basePath: '/smart-city',
+    basePath: '/smartcity',
     images: {
         unoptimized: true,
     },
